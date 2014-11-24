@@ -15,6 +15,13 @@
   <meta name="HandheldFriendly" content="True">
   <meta name="MobileOptimized" content="320">
   <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0, maximum-scale=1, user-scalable=no, minimal-ui">
+
+  <script src="//cdn.tapcite.com/tapcite-display-controller.min.js" type="text/javascript"></script>
+  <style type="text/css">
+    .restart-button, retry-button {
+      display:none !important;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
@@ -36,7 +43,7 @@
         <p></p>
         <div class="lower">
 	        <a class="keep-playing-button">Keep going</a>
-          <a class="retry-button">Try again</a>
+              <a class="retry-button">Try again</a>
         </div>
       </div>
 
@@ -73,19 +80,20 @@
     </div>
 
     <p class="game-explanation">
-      <strong class="important">How to play:</strong> Use your <strong>arrow keys</strong> to move the tiles. When two tiles with the same number touch, they <strong>merge into one!</strong>
+      <strong class="important">How to play:</strong> Use your <strong>mobile phone</strong> to move the tiles. When two tiles with the same number touch, they <strong>merge into one!</strong>
     </p>
     <hr>
     <p>
-    <strong class="important">Note:</strong> This site is the official version of 2048. You can play it on your phone via <a href="http://git.io/2048">http://git.io/2048.</a> All other apps or sites are derivatives or fakes, and should be used with caution.
+    <strong class="important">Note:</strong> This game is forked and modified from the official version of 2048.
     </p>
     <hr>
     <p>
-    Created by <a href="http://gabrielecirulli.com" target="_blank">Gabriele Cirulli.</a> Based on <a href="https://itunes.apple.com/us/app/1024!/id823499224" target="_blank">1024 by Veewo Studio</a> and conceptually similar to <a href="http://asherv.com/threes/" target="_blank">Threes by Asher Vollmer.</a>
+    Original game is created by <b>Gabriele Cirulli.</b> Based on <b>1024 by Veewo Studio</b> and conceptually similar to <b>Threes by Asher Vollmer.</b>
     </p>
   </div>
 
   <script src="js/bind_polyfill.js"></script>
+  <script src="js/jquery-2.1.1.min.js"></script>
   <script src="js/classlist_polyfill.js"></script>
   <script src="js/animframe_polyfill.js"></script>
   <script src="js/keyboard_input_manager.js"></script>
@@ -95,5 +103,37 @@
   <script src="js/local_storage_manager.js"></script>
   <script src="js/game_manager.js"></script>
   <script src="js/application.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      var game = new GameManager(4, KeyboardInputManager, HTMLActuator, LocalStorageManager);
+      Tapcite.on('tapcite:play',function() {
+        game.restart();
+      });
+      var map = {
+        up: 0,
+        right: 1,
+        down: 2,
+        left: 3
+      };
+      Tapcite.on('tapcite:stop',function() {
+        game.restart();
+      });
+      Tapcite.on('restart',function() {
+        game.restart();
+      });
+      Tapcite.on('up',function() {
+        game.move(map.up);
+      });
+      Tapcite.on('right',function() {
+        game.move(map.right);
+      });
+      Tapcite.on('down',function() {
+        game.move(map.down);
+      });
+      Tapcite.on('left',function() {
+        game.move(map.left);
+      });
+    });
+  </script>
 </body>
 </html>

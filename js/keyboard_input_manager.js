@@ -54,7 +54,7 @@ KeyboardInputManager.prototype.listen = function () {
     var modifiers = event.altKey || event.ctrlKey || event.metaKey ||
                     event.shiftKey;
     var mapped    = map[event.which];
-
+console.debug('keydown')
     if (!modifiers) {
       if (mapped !== undefined) {
         event.preventDefault();
