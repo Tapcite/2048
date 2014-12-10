@@ -105,6 +105,14 @@
   <script src="js/application.js"></script>
   <script type="text/javascript">
     $(document).ready(function() {
+      var updateScore = HTMLActuator.prototype.updateScore;
+      HTMLActuator.prototype.updateScore = function() {
+        var score = this.score;
+        updateScore.apply(this,arguments);
+        if(score !== this.score) {
+          Tapcite.text('score',this.score);
+        }
+      };
       var game = new GameManager(4, KeyboardInputManager, HTMLActuator, LocalStorageManager);
       Tapcite.on('tapcite:play',function() {
         game.restart();
